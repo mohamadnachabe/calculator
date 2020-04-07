@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="309d2716-6182-464b-8292-93c44ff30d1b" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Unit Test" />
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectId" id="1ZqlCtv8K4cpsKRo31VxWd6UYf9" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
+  </component>
+  <component name="PyConsoleOptionsProvider">
+    <option name="myPythonConsoleState">
+      <console-settings module-name="nlp" is-module-sdk="true">
+        <option name="myUseModuleSdk" value="true" />
+        <option name="myModuleName" value="nlp" />
+      </console-settings>
+    </option>
+  </component>
+  <component name="RunManager" selected="Python.calculator">
+    <configuration name="1" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="nlp" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/1.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="calculator" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="nlp" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/calculator.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="w" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="nlp" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/w.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.calculator" />
+        <item itemvalue="Python.w" />
+        <item itemvalue="Python.1" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="309d2716-6182-464b-8292-93c44ff30d1b" name="Default Changelist" comment="" />
+      <created>1585574380879</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1585574380879</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="2159" y="215" key="#Inspections" timestamp="1585576591400">
+      <screen x="1680" y="23" width="1920" height="1057" />
+    </state>
+    <state x="2159" y="215" key="#Inspections/0.23.1680.985/1680.23.1920.1057@1680.23.1920.1057" timestamp="1585576591400" />
+    <state x="936" y="427" key="#xdebugger.evaluate" timestamp="1586118853971">
+      <screen x="0" y="23" width="1680" height="983" />
+    </state>
+    <state x="936" y="427" key="#xdebugger.evaluate/0.23.1680.983@0.23.1680.983" timestamp="1586118853971" />
+    <state width="539" height="466" key="DebuggerActiveHint" timestamp="1586290279709">
+      <screen x="0" y="23" width="1680" height="983" />
+    </state>
+    <state width="539" height="466" key="DebuggerActiveHint/0.23.1680.983@0.23.1680.983" timestamp="1586290279709" />
+    <state x="1959" y="177" width="1200" height="745" key="DiffContextDialog" timestamp="1585578435240">
+      <screen x="1680" y="23" width="1920" height="1057" />
+    </state>
+    <state x="1959" y="177" width="1200" height="745" key="DiffContextDialog/0.23.1680.985/1680.23.1920.1057@1680.23.1920.1057" timestamp="1585578435240" />
+    <state x="2347" y="310" key="FileChooserDialogImpl" timestamp="1585575501004">
+      <screen x="1680" y="23" width="1920" height="1057" />
+    </state>
+    <state x="2347" y="310" key="FileChooserDialogImpl/0.23.1680.985/1680.23.1920.1057@1680.23.1920.1057" timestamp="1585575501004" />
+    <state width="1659" height="159" key="GridCell.Tab.0.bottom" timestamp="1586299042849">
+      <screen x="0" y="23" width="1680" height="983" />
+    </state>
+    <state width="1379" height="207" key="GridCell.Tab.0.bottom/0.23.1680.983/1680.23.1920.1057@1680.23.1920.1057" timestamp="1586285040664" />
+    <state width="1659" height="159" key="GridCell.Tab.0.bottom/0.23.1680.983@0.23.1680.983" timestamp="1586299042849" />
+    <state width="1379" height="207" key="GridCell.Tab.0.bottom/0.23.1680.985/1680.23.1920.1057@1680.23.1920.1057" timestamp="1585586352009" />
+    <state width="1659" height="159" key="GridCell.Tab.0.center" timestamp="1586299042848">
+      <screen x="0" y="23" width="1680" height="983" />
+    </state>
+    <state width="1379" height="207" key="GridCell.Tab.0.center/0.23.1680.983/1680.23.1920.1057@1680.23.1920.1057" timestamp="1586285040663" />
+    <state width="1659" height="159" key="GridCell.Tab.0.center/0.23.1680.983@0.23.1680.983" timestamp="1586299042848" />
+    <state width="1379" height="207" key="GridCell.Tab.0.center/0.23.1680.985/1680.23.1920.1057@1680.23.1920.1057" timestamp="1585586352009" />
+    <state width="1659" height="159" key="GridCell.Tab.0.left" timestamp="1586299042848">
+      <screen x="0" y="23" width="1680" height="983" />
+    </state>
+    <state width="1379" height="207" key="GridCell.Tab.0.left/0.23.1680.983/1680.23.1920.1057@1680.23.1920.1057" timestamp="1586285040662" />
+    <state width="1659" height="159" key="GridCell.Tab.0.left/0.23.1680.983@0.23.1680.983" timestamp="1586299042848" />
+    <state width="1379" height="207" key="GridCell.Tab.0.left/0.23.1680.985/1680.23.1920.1057@1680.23.1920.1057" timestamp="1585586352008" />
+    <state width="1659" height="159" key="GridCell.Tab.0.right" timestamp="1586299042849">
+      <screen x="0" y="23" width="1680" height="983" />
+    </state>
+    <state width="1379" height="207" key="GridCell.Tab.0.right/0.23.1680.983/1680.23.1920.1057@1680.23.1920.1057" timestamp="1586285040663" />
+    <state width="1659" height="159" key="GridCell.Tab.0.right/0.23.1680.983@0.23.1680.983" timestamp="1586299042849" />
+    <state width="1379" height="207" key="GridCell.Tab.0.right/0.23.1680.985/1680.23.1920.1057@1680.23.1920.1057" timestamp="1585586352009" />
+    <state width="1659" height="314" key="GridCell.Tab.1.bottom" timestamp="1586297942203">
+      <screen x="0" y="23" width="1680" height="983" />
+    </state>
+    <state width="1379" height="312" key="GridCell.Tab.1.bottom/0.23.1680.983/1680.23.1920.1057@1680.23.1920.1057" timestamp="1586283256574" />
+    <state width="1659" height="314" key="GridCell.Tab.1.bottom/0.23.1680.983@0.23.1680.983" timestamp="1586297942203" />
+    <state width="1659" height="314" key="GridCell.Tab.1.center" timestamp="1586297942203">
+      <screen x="0" y="23" width="1680" height="983" />
+    </state>
+    <state width="1379" height="312" key="GridCell.Tab.1.center/0.23.1680.983/1680.23.1920.1057@1680.23.1920.1057" timestamp="1586283256573" />
+    <state width="1659" height="314" key="GridCell.Tab.1.center/0.23.1680.983@0.23.1680.983" timestamp="1586297942203" />
+    <state width="1659" height="314" key="GridCell.Tab.1.left" timestamp="1586297942203">
+      <screen x="0" y="23" width="1680" height="983" />
+    </state>
+    <state width="1379" height="312" key="GridCell.Tab.1.left/0.23.1680.983/1680.23.1920.1057@1680.23.1920.1057" timestamp="1586283256573" />
+    <state width="1659" height="314" key="GridCell.Tab.1.left/0.23.1680.983@0.23.1680.983" timestamp="1586297942203" />
+    <state width="1659" height="314" key="GridCell.Tab.1.right" timestamp="1586297942203">
+      <screen x="0" y="23" width="1680" height="983" />
+    </state>
+    <state width="1379" height="312" key="GridCell.Tab.1.right/0.23.1680.983/1680.23.1920.1057@1680.23.1920.1057" timestamp="1586283256573" />
+    <state width="1659" height="314" key="GridCell.Tab.1.right/0.23.1680.983@0.23.1680.983" timestamp="1586297942203" />
+    <state x="2068" y="188" key="SettingsEditor" timestamp="1585576722444">
+      <screen x="1680" y="23" width="1920" height="1057" />
+    </state>
+    <state x="2068" y="188" key="SettingsEditor/0.23.1680.985/1680.23.1920.1057@1680.23.1920.1057" timestamp="1585576722444" />
+    <state x="2253" y="382" key="com.intellij.ide.util.TipDialog" timestamp="1586282206295">
+      <screen x="1680" y="23" width="1920" height="1057" />
+    </state>
+    <state x="2253" y="382" key="com.intellij.ide.util.TipDialog/0.23.1680.983/1680.23.1920.1057@1680.23.1920.1057" timestamp="1586282206295" />
+    <state x="501" y="357" key="com.intellij.ide.util.TipDialog/0.23.1680.983@0.23.1680.983" timestamp="1586204459776" />
+    <state x="2252" y="382" key="com.intellij.ide.util.TipDialog/0.23.1680.985/1680.23.1920.1057@1680.23.1920.1057" timestamp="1585575331113" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <default-breakpoints>
+        <breakpoint type="python-exception">
+          <properties notifyOnTerminate="true" exception="BaseException">
+            <option name="notifyOnTerminate" value="true" />
+          </properties>
+        </breakpoint>
+      </default-breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
