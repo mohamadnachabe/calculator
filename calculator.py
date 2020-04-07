@@ -6,6 +6,44 @@ def calculate(o):
     return calculate_helper(numbers, operations)
 
 
+def calculate_helper(numbers, operations):
+    if len(numbers) == 1 and len(operations) != 0:
+        raise RuntimeError
+
+    if len(numbers) == 1:
+        return int(numbers[0])
+
+    if operations[0] == '(':
+        i = find_index_of_closing_par(operations)
+        j = find_operations(operations, i)
+
+        n = calculate_helper(numbers[:j + 1], operations[1:i])
+        return calculate_helper([n] + numbers[j + 1:len(numbers)], operations[i + 1:len(operations)])
+
+    elif operations[0] == '*':
+        n = [int(numbers[0]) * int(numbers[1])] + numbers[2:]
+        if len(operations) > 1 and operations[1] == '(':  # if bracket is coming up it takes higher precedence
+            return int(numbers[0]) * calculate_helper(numbers[1:], operations[1:])
+        else:
+            return calculate_helper(n, operations[1:])
+
+    elif operations[0] == '/':
+        n = [int(numbers[0]) / int(numbers[1])] + numbers[2:]
+        if len(operations) > 1 and operations[1] == '(':  # if bracket is coming up it takes higher precedence
+            return int(numbers[0]) / calculate_helper(numbers[1:], operations[1:])
+        else:
+            return calculate_helper(n, operations[1:])
+
+    elif operations[0] == '+':
+        return int(numbers[0]) + calculate_helper(numbers[1:], operations[1:])
+
+    elif operations[0] == '-':
+        return int(numbers[0]) - calculate_helper(numbers[1:], operations[1:])
+
+    else:
+        raise RuntimeError
+
+
 def find_index_of_closing_par(operations):
     stack = []
     index = 0
@@ -21,38 +59,6 @@ def find_index_of_closing_par(operations):
         index = index + 1
 
     return to_return
-
-
-def calculate_helper(numbers, operations):
-    if len(numbers) == 1 and len(operations) != 0:
-        raise RuntimeError
-
-    if len(numbers) == 1:
-        return int(numbers[0])
-
-    if operations[0] == '(':
-        i = find_index_of_closing_par(operations)
-        j = find_operations(operations, i)
-
-        n = calculate_helper(numbers[:j+1], operations[1:i])
-        return calculate_helper([n] + numbers[j+1:len(numbers)], operations[i+1:len(operations)])
-
-    elif operations[0] == '*':
-        n = [int(numbers[0]) * int(numbers[1])] + numbers[2:]
-        return calculate_helper(n, operations[1:])
-
-    elif operations[0] == '/':
-        n = [int(numbers[0]) / int(numbers[1])] + numbers[2:]
-        return calculate_helper(n, operations[1:])
-
-    elif operations[0] == '+':
-        return int(numbers[0]) + calculate_helper(numbers[1:], operations[1:])
-
-    elif operations[0] == '-':
-        return int(numbers[0]) - calculate_helper(numbers[1:], operations[1:])
-
-    else:
-        raise RuntimeError
 
 
 def parse_numbers(o):
@@ -99,7 +105,7 @@ def clean_white_space(o):
         return clean_white_space(o[1:])
 
 
-# (4 + 4) * 344 + ((6 + 7) * 1333) + 2 + 100000
+# 't = (4 + 4) * 344 + ((6 + 7) * 1333) + 2 + 100000'
 t = '(4 + 4) * 344 + ((6 + 7) * 1333) + 2 + 100000 * (30 + 2)'
 
 # need to validate that brackets are balanced
