@@ -139,6 +139,25 @@ def clean_white_space(o):
         return clean_white_space(o[1:])
 
 
+def validate_brackets(o):
+    stack = []
+    index = 0
+    index_of_opened = index
+    for i in o:
+        if i == '(':
+            stack.append('x')
+            index_of_opened = index
+        if i == ')':
+            stack.pop()
+        index += 1
+
+    if len(stack) > 0:
+        m = 'Unbalanced bracket''\n' \
+            + o[:index_of_opened] + '' + o[index_of_opened] + '' + o[index_of_opened+1:len(o)] \
+            + '\n' + (' ' * index_of_opened + '^')
+        raise RuntimeError(m)
+
+
 t = '(4 + 4) * 344 + (((6 + 7) * 1333) + 2 + 100000) * (30 + 2) + (4 + 4) * 344 * (((6 + 7) * 1333) + 2 + 100000) * (' \
     '30 + 2) + (4 + 4) * 344 + (((6 + 7) * 1333) '
 
@@ -146,6 +165,8 @@ print("-------")
 print("equation: " + t)
 print("equation (cleaned white space): " + clean_white_space(t))
 print("equation (cleaned white space) length: " + str(len(clean_white_space(t))))
+
+validate_brackets(t)
 
 # need to validate that brackets are balanced
 print("result: " + str(calculate(t)))
