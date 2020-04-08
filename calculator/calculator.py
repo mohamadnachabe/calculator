@@ -43,9 +43,6 @@ def log_start(numbers, operations):
     log('-------')
 
 
-recursive_call_count = 0
-
-
 #  todo
 #   1. investigate binary tree approach
 #   2. dynamic programming variant for the current approach
