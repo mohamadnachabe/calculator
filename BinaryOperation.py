@@ -1,9 +1,3 @@
-class BinaryOperation:
-
-    def apply(self, __op2):
-        pass
-
-
 class Add:
     def __init__(self, __op1):
         self.__op1 = __op1

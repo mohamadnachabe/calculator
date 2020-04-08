@@ -30,14 +30,18 @@ def calculate(o):
     numbers = parse_numbers(o)
     operations = parse_operators(o)
 
+    log_start(numbers, operations)
+
+    return calculate_helper(numbers, operations)
+
+
+def log_start(numbers, operations):
     log('-------')
     log('looking for:')
     log('-------')
     log(numbers)
     log(operations)
     log('-------')
-
-    return calculate_helper(numbers, operations)
 
 
 recursive_call_count = 0
@@ -83,12 +87,16 @@ def calculate_helper(numbers, operations):
     else:
         raise RuntimeError
 
+    log_result(numbers, operations, result)
+
+    return result
+
+
+def log_result(numbers, operations, result):
     log(operations)
     log(numbers)
     log(result)
     log('-----')
-
-    return result
 
 
 def count_recursive_call():
