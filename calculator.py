@@ -2,10 +2,9 @@ import sys
 
 
 def calculate(o):
-    n = clean_white_space(o)
 
-    numbers = parse_numbers(n)
-    operations = parse_operations(n)
+    numbers = parse_numbers(o)
+    operations = parse_operators(o)
 
     print('-------')
     print('looking for:')
@@ -33,7 +32,7 @@ def calculate_helper(numbers, operations):
     result = 0
 
     if operations[0] == '(':
-        i = find_index_of_closing_par(operations)
+        i = find_index_of_closing_bracket(operations)
         j = find_operations(operations, i)
 
         n = calculate_helper(numbers[:j + 1], operations[1:i])
@@ -41,7 +40,7 @@ def calculate_helper(numbers, operations):
 
     elif operations[0] == '*':
         if len(operations) > 1 and operations[1] == '(':  # if bracket is coming up it takes higher precedence
-            i = find_index_of_closing_par(operations[1:]) + 1
+            i = find_index_of_closing_bracket(operations[1:]) + 1
             j = find_operations(operations[1:], i) + 1
 
             n = int(numbers[0]) * calculate_helper(numbers[1:j + 1], operations[2:i])
@@ -52,7 +51,7 @@ def calculate_helper(numbers, operations):
 
     elif operations[0] == '/':
         if len(operations) > 1 and operations[1] == '(':  # if bracket is coming up it takes higher precedence
-            i = find_index_of_closing_par(operations[1:]) + 1
+            i = find_index_of_closing_bracket(operations[1:]) + 1
             j = find_operations(operations[1:], i) + 1
 
             n = int(numbers[0]) / calculate_helper(numbers[1:j + 1], operations[2:i])
@@ -78,7 +77,7 @@ def calculate_helper(numbers, operations):
     return result
 
 
-def find_index_of_closing_par(operations):
+def find_index_of_closing_bracket(operations):
     stack = []
     index = 0
     to_return = index
@@ -99,6 +98,11 @@ def parse_numbers(o):
     result = []
     while len(o) != 0:
         n = ''
+
+        if o[0] == ' ':
+            o = o[1:]
+            continue
+
         while len(o) != 0 and o[0].isdigit():
             n = n + o[0]
             o = o[1:]
@@ -120,23 +124,15 @@ def find_operations(o, w):
     return j
 
 
-def parse_operations(o):
+def parse_operators(o):
     r = []
     for i in o:
+        if i == ' ':
+            continue
         if i == '+' or i == '*' or i == '/' or i == '-' or i == '(' or i == ')':
             r.append(i)
 
     return r
-
-
-def clean_white_space(o):
-    if len(o) == 1:
-        return o
-
-    if o[0] != ' ':
-        return o[0] + clean_white_space(o[1:])
-    else:
-        return clean_white_space(o[1:])
 
 
 def validate_brackets(o):
@@ -159,12 +155,10 @@ def validate_brackets(o):
 
 
 t = '(4 + 4) * 344 + (((6 + 7) * 1333) + 2 + 100000) * (30 + 2) + (4 + 4) * 344 * (((6 + 7) * 1333) + 2 + 100000) * (' \
-    '30 + 2) + (4 + 4) * 344 + (((6 + 7) * 1333) '
+    '30 + 2) + (4 + 4) * 344 + (((6 + 7) * 1333)) '
 
 print("-------")
 print("equation: " + t)
-print("equation (cleaned white space): " + clean_white_space(t))
-print("equation (cleaned white space) length: " + str(len(clean_white_space(t))))
 
 validate_brackets(t)
 
