@@ -1,9 +1,8 @@
-import sys
-import time
 from BinaryOperation import Add, Multiply, Divide, Subtract, Power, NoOp
 
 # env variables
 debug = False  # set this True to enable debug level logging
+stress_test = False
 open_bracket = '('
 closed_bracket = ')'
 addition_sign = '+'
@@ -24,7 +23,7 @@ supported_operations = {addition_sign,
 supported_operators = supported_operations.union(open_bracket, closed_bracket)
 
 
-def calculate(o):
+def evaluate(o):
     validate_brackets(o)
 
     numbers = parse_numbers(o)
@@ -53,7 +52,6 @@ recursive_call_count = 0
 #   function needs refactoring
 #  function recursively evaluates the expression
 def calculate_helper(numbers, operations):
-    count_recursive_call()
 
     if len(numbers) == 1 and len(operations) != 0:
         raise RuntimeError
@@ -97,11 +95,6 @@ def log_result(numbers, operations, result):
     log(numbers)
     log(result)
     log('-----')
-
-
-def count_recursive_call():
-    global recursive_call_count
-    recursive_call_count += 1
 
 
 def handle_operation_with_potential_precedence(numbers, operations, binary_operation):
@@ -215,52 +208,4 @@ def validate_brackets(o):
 def log(message):
     if debug:
         print(message)
-
-
-def test(t, name):
-    start = time.time()
-    global recursive_call_count
-    recursive_call_count = 0
-    print(name)
-    print("-------")
-    print("equation: " + t)
-    print("result: " + str(calculate(t)))
-    print('execution time: ' + str(time.time()-start))
-    print()
-
-    print("recursive calls made: " + str(recursive_call_count))
-    print("recursion stack size: " + str(sys.getrecursionlimit()))
-
-    log("time complexity: O(n)")
-    log("space complexity: O(n)?")
-    print()
-
-
-def stress(t):
-    start = time.time()
-    tps = 0
-    while time.time() - start < 1:
-        calculate(t)
-        tps += 1
-
-    print('tps: ' + str(tps) + '\n')
-
-
-t1 = '(4 + 4) * 344 + (((6 + 7) * 1333) + 2 + 100000) * (30 + 2)' \
-     ' + (4 + 4) * 344 * (((6 + 7) * 1333) + 2 + 100000) * (30 + 2)' \
-     ' + (4 + 4) * 344 * (((6 + 7) * 1333) + 2 + 100000) * (30 + 2)' \
-     ' + (4 + 4) * 344 * (((6 + 7) * 1333) + 2 + 100000) * (30 + 2)' \
-     ' + (4 + 4) * 344 * (((6 + 7) * 1333) + 2 + 100000) * (30 + 2)' \
-     ' + (4 + 4) * 344 + (((6 + 7) * 1333)) '
-test(t1, 'Complex operation')
-stress(t1)
-
-t2 = '2^(2*4)*5 +2'
-test(t2, 'Exponent operation')
-stress(t2)
-
-t3 = '(1+1)'
-test(t3, 'Simple operation')
-stress(t3)
-
 
