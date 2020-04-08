@@ -28,18 +28,7 @@ def evaluate(o):
     numbers = parse_numbers(o)
     operations = parse_operators(o)
 
-    log_start(numbers, operations)
-
     return calculate_helper(numbers, operations)
-
-
-def log_start(numbers, operations):
-    log('-------')
-    log('looking for:')
-    log('-------')
-    log(numbers)
-    log(operations)
-    log('-------')
 
 
 #  todo
@@ -90,7 +79,6 @@ def log_result(numbers, operations, result):
     log(operations)
     log(numbers)
     log(result)
-    log('-----')
 
 
 def handle_operation_with_potential_precedence(numbers, operations, binary_operation):
