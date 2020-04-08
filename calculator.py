@@ -1,5 +1,6 @@
 import sys
 import time
+from BinaryOperation import Add, Multiply, Divide, Subtract, Power, NoOp
 
 # env variables
 debug = False  # set this True to enable debug level logging
@@ -48,8 +49,7 @@ recursive_call_count = 0
 #   function needs refactoring
 #  function recursively evaluates the expression
 def calculate_helper(numbers, operations):
-    global recursive_call_count
-    recursive_call_count += 1
+    count_recursive_call()
 
     if len(numbers) == 1 and len(operations) != 0:
         raise RuntimeError
@@ -58,50 +58,27 @@ def calculate_helper(numbers, operations):
         return int(numbers[0])
 
     if operations[0] == open_bracket:
-        i = find_index_of_closing_bracket(operations)
-        j = find_operations_in_operators(operations, i)
-
-        n = calculate_helper(numbers[:j + 1], operations[1:i])
-        result = calculate_helper([n] + numbers[j + 1:len(numbers)], operations[i + 1:len(operations)])
+        result = handle_bracket_operation(numbers, operations, 0, NoOp())
 
     elif operations[0] == exponent_sign:
-        if len(operations) > 1 and operations[1] == '(':  # if bracket is coming up it takes higher precedence
-            i = find_index_of_closing_bracket(operations[1:]) + 1
-            j = find_operations_in_operators(operations[1:], i) + 1
-
-            n = pow(int(numbers[0]), calculate_helper(numbers[1:j + 1], operations[2:i]))
-            result = calculate_helper([n] + numbers[j + 1:len(numbers)], operations[i + 1:len(operations)])
-        else:
-            n = [pow(int(numbers[0]), int(numbers[1]))] + numbers[2:]
-            result = calculate_helper(n, operations[1:])
+        power = Power(int(numbers[0]))
+        result = handle_operation_with_potential_precedence(numbers, operations, power)
 
     elif operations[0] == multiplication_sign:
-        if len(operations) > 1 and operations[1] == '(':  # if bracket is coming up it takes higher precedence
-            i = find_index_of_closing_bracket(operations[1:]) + 1
-            j = find_operations_in_operators(operations[1:], i) + 1
-
-            n = int(numbers[0]) * calculate_helper(numbers[1:j + 1], operations[2:i])
-            result = calculate_helper([n] + numbers[j + 1:len(numbers)], operations[i + 1:len(operations)])
-        else:
-            n = [int(numbers[0]) * int(numbers[1])] + numbers[2:]
-            result = calculate_helper(n, operations[1:])
+        multiply = Multiply(int(numbers[0]))
+        result = handle_operation_with_potential_precedence(numbers, operations, multiply)
 
     elif operations[0] == division_sign:
-        if len(operations) > 1 and operations[1] == '(':  # if bracket is coming up it takes higher precedence
-            i = find_index_of_closing_bracket(operations[1:]) + 1
-            j = find_operations_in_operators(operations[1:], i) + 1
-
-            n = int(numbers[0]) / calculate_helper(numbers[1:j + 1], operations[2:i])
-            result = calculate_helper([n] + numbers[j + 1:len(numbers)], operations[i + 1:len(operations)])
-        else:
-            n = [int(numbers[0]) / int(numbers[1])] + numbers[2:]
-            result = calculate_helper(n, operations[1:])
+        divide = Divide(int(numbers[0]))
+        result = handle_operation_with_potential_precedence(numbers, operations, divide)
 
     elif operations[0] == addition_sign:
-        result = int(numbers[0]) + calculate_helper(numbers[1:], operations[1:])
+        add = Add(int(numbers[0]))
+        result = add.apply(calculate_helper(numbers[1:], operations[1:]))
 
     elif operations[0] == subtraction_sign:
-        result = int(numbers[0]) - calculate_helper(numbers[1:], operations[1:])
+        subtract = Subtract(int(numbers[0]))
+        result = subtract.apply(calculate_helper(numbers[1:], operations[1:]))
 
     else:
         raise RuntimeError
@@ -110,6 +87,37 @@ def calculate_helper(numbers, operations):
     log(numbers)
     log(result)
     log('-----')
+
+    return result
+
+
+def count_recursive_call():
+    global recursive_call_count
+    recursive_call_count += 1
+
+
+def handle_operation_with_potential_precedence(numbers, operations, binary_operation):
+    if len(operations) > 1 and operations[1] == '(':  # if bracket is coming up it takes higher precedence
+        result = handle_bracket_operation(numbers, operations, 1, binary_operation)
+    else:
+        result = high_precedence_operation(numbers, operations, binary_operation)
+    return result
+
+
+def high_precedence_operation(numbers, operations, binary_operation):
+    n = [binary_operation.apply(int(numbers[1]))] + numbers[2:]
+    result = calculate_helper(n, operations[1:])
+    return result
+
+
+def handle_bracket_operation(numbers, operations, offset, binary_operation):
+
+    i = find_index_of_closing_bracket(operations[offset:]) + offset
+    j = find_operations_in_operators(operations[offset:], i) + offset
+
+    n = binary_operation.apply(calculate_helper(numbers[offset:j + 1], operations[1+offset:i]))
+
+    result = calculate_helper([n] + numbers[j + 1:len(numbers)], operations[i + 1:len(operations)])
 
     return result
 
@@ -235,13 +243,6 @@ t1 = '(4 + 4) * 344 + (((6 + 7) * 1333) + 2 + 100000) * (30 + 2)' \
      ' + (4 + 4) * 344 * (((6 + 7) * 1333) + 2 + 100000) * (30 + 2)' \
      ' + (4 + 4) * 344 * (((6 + 7) * 1333) + 2 + 100000) * (30 + 2)' \
      ' + (4 + 4) * 344 * (((6 + 7) * 1333) + 2 + 100000) * (30 + 2)' \
-     ' + (4 + 4) * 344 * (((6 + 7) * 1333) + 2 + 100000) * (30 + 2)' \
-     ' + (4 + 4) * 344 * (((6 + 7) * 1333) + 2 + 100000) * (30 + 2)' \
-     ' + (4 + 4) * 344 * (((6 + 7) * 1333) + 2 + 100000) * (30 + 2)' \
-     ' + (4 + 4) * 344 * (((6 + 7) * 1333) + 2 + 100000) * (30 + 2)' \
-     ' + (4 + 4) * 344 * (((6 + 7) * 1333) + 2 + 100000) * (30 + 2)' \
-     ' + (4 + 4) * 344 * (((6 + 7) * 1333) + 2 + 100000) * (30 + 2)' \
-     ' + (4 + 4) * 344 * (((6 + 7) * 1333) + 2 + 100000) * (30 + 2)' \
      ' + (4 + 4) * 344 + (((6 + 7) * 1333)) '
 test(t1, 'Complex operation')
 stress(t1)
@@ -250,7 +251,7 @@ t2 = '2^(2*4)*5 +2'
 test(t2, 'Exponent operation')
 stress(t2)
 
-t3 = '1+1'
+t3 = '(1+1)'
 test(t3, 'Simple operation')
 stress(t3)
 
