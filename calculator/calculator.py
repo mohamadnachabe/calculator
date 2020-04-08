@@ -1,4 +1,4 @@
-from BinaryOperation import Add, Multiply, Divide, Subtract, Power, NoOp
+from calculator.BinaryOperation import Add, Multiply, Divide, Subtract, Power, NoOp
 
 # env variables
 debug = False  # set this True to enable debug level logging

@@ -1,6 +1,6 @@
 import unittest
 import time
-from calculator import evaluate
+from calculator.calculator import evaluate
 
 
 class TestCalculator(unittest.TestCase):
