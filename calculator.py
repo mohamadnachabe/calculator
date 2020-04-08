@@ -1,47 +1,81 @@
+import sys
+
+
 def calculate(o):
     n = clean_white_space(o)
+
     numbers = parse_numbers(n)
     operations = parse_operations(n)
+
+    print('-------')
+    print('looking for:')
+    print('-------')
+    print(numbers)
+    print(operations)
+    print('-------')
 
     return calculate_helper(numbers, operations)
 
 
+recursive_call_count = 0
+
+
 def calculate_helper(numbers, operations):
+    global recursive_call_count
+    recursive_call_count += 1
+
     if len(numbers) == 1 and len(operations) != 0:
         raise RuntimeError
 
     if len(numbers) == 1:
         return int(numbers[0])
 
+    result = 0
+
     if operations[0] == '(':
         i = find_index_of_closing_par(operations)
         j = find_operations(operations, i)
 
         n = calculate_helper(numbers[:j + 1], operations[1:i])
-        return calculate_helper([n] + numbers[j + 1:len(numbers)], operations[i + 1:len(operations)])
+        result = calculate_helper([n] + numbers[j + 1:len(numbers)], operations[i + 1:len(operations)])
 
     elif operations[0] == '*':
-        n = [int(numbers[0]) * int(numbers[1])] + numbers[2:]
         if len(operations) > 1 and operations[1] == '(':  # if bracket is coming up it takes higher precedence
-            return int(numbers[0]) * calculate_helper(numbers[1:], operations[1:])
+            i = find_index_of_closing_par(operations[1:]) + 1
+            j = find_operations(operations[1:], i) + 1
+
+            n = int(numbers[0]) * calculate_helper(numbers[1:j + 1], operations[2:i])
+            result = calculate_helper([n] + numbers[j + 1:len(numbers)], operations[i + 1:len(operations)])
         else:
-            return calculate_helper(n, operations[1:])
+            n = [int(numbers[0]) * int(numbers[1])] + numbers[2:]
+            result = calculate_helper(n, operations[1:])
 
     elif operations[0] == '/':
-        n = [int(numbers[0]) / int(numbers[1])] + numbers[2:]
         if len(operations) > 1 and operations[1] == '(':  # if bracket is coming up it takes higher precedence
-            return int(numbers[0]) / calculate_helper(numbers[1:], operations[1:])
+            i = find_index_of_closing_par(operations[1:]) + 1
+            j = find_operations(operations[1:], i) + 1
+
+            n = int(numbers[0]) / calculate_helper(numbers[1:j + 1], operations[2:i])
+            result = calculate_helper([n] + numbers[j + 1:len(numbers)], operations[i + 1:len(operations)])
         else:
-            return calculate_helper(n, operations[1:])
+            n = [int(numbers[0]) / int(numbers[1])] + numbers[2:]
+            result = calculate_helper(n, operations[1:])
 
     elif operations[0] == '+':
-        return int(numbers[0]) + calculate_helper(numbers[1:], operations[1:])
+        result = int(numbers[0]) + calculate_helper(numbers[1:], operations[1:])
 
     elif operations[0] == '-':
-        return int(numbers[0]) - calculate_helper(numbers[1:], operations[1:])
+        result = int(numbers[0]) - calculate_helper(numbers[1:], operations[1:])
 
     else:
         raise RuntimeError
+
+    print(numbers)
+    print(operations)
+    print(result)
+    print('-----')
+
+    return result
 
 
 def find_index_of_closing_par(operations):
@@ -105,8 +139,19 @@ def clean_white_space(o):
         return clean_white_space(o[1:])
 
 
-# 't = (4 + 4) * 344 + ((6 + 7) * 1333) + 2 + 100000'
-t = '(4 + 4) * 344 + ((6 + 7) * 1333) + 2 + 100000 * (30 + 2)'
+t = '(4 + 4) * 344 + (((6 + 7) * 1333) + 2 + 100000) * (30 + 2) + (4 + 4) * 344 * (((6 + 7) * 1333) + 2 + 100000) * (' \
+    '30 + 2) + (4 + 4) * 344 + (((6 + 7) * 1333) '
+
+print("-------")
+print("equation: " + t)
+print("equation (cleaned white space): " + clean_white_space(t))
+print("equation (cleaned white space) length: " + str(len(clean_white_space(t))))
 
 # need to validate that brackets are balanced
-print(calculate(t))
+print("result: " + str(calculate(t)))
+
+print("-------")
+print("recursion stack size: " + str(sys.getrecursionlimit()))
+print("recursive calls made: " + str(recursive_call_count))
+print("time complexity: O(n)")
+print("space complexity: O(n)?")
