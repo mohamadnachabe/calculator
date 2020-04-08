@@ -2,7 +2,6 @@ from calculator.BinaryOperation import Add, Multiply, Divide, Subtract, Power, N
 
 # env variables
 debug = False  # set this True to enable debug level logging
-stress_test = False
 open_bracket = '('
 closed_bracket = ')'
 addition_sign = '+'
