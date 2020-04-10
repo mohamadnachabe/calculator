@@ -2,8 +2,8 @@ from calculator.binary_operation import Add, Multiply, Divide, Subtract, Exponen
 from calculator.calculator import __log
 from calculator.config import open_bracket, closed_bracket, exponent_sign, multiplication_sign, division_sign, \
     addition_sign, subtraction_sign
-from calculator.utils import __parse_numbers, __parse_operators, __find_index_of_closing_bracket, \
-    __find_operations_in_operators
+from calculator.utils import parse_numbers, parse_operators, find_index_of_closing_bracket, \
+    find_operations_in_operators
 
 debug = True  # set this True to enable debug level logging
 
@@ -11,8 +11,8 @@ debug = True  # set this True to enable debug level logging
 def evaluate(o):
     validate_brackets(o)
 
-    numbers = __parse_numbers(o)
-    operations = __parse_operators(o)
+    numbers = parse_numbers(o)
+    operations = parse_operators(o)
 
     return __calculate_helper(None, numbers, 0, len(numbers)-1, operations, 0, len(operations)-1)
 
@@ -119,8 +119,8 @@ def __high_precedence_operation(numbers, ns, ne, operations, os, oe, binary_oper
 
 
 def __handle_bracket_operation(carry, numbers, ns, ne, operations, os, oe, binary_operation):
-    i = __find_index_of_closing_bracket(operations, os)
-    j = __find_operations_in_operators(operations, os, i)
+    i = find_index_of_closing_bracket(operations, os)
+    j = find_operations_in_operators(operations, os, i)
 
     n = binary_operation.apply(
         __calculate_helper(carry, numbers, ns, ns + j, operations, os + 1, i - 1)

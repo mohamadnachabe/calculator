@@ -1,7 +1,7 @@
 from calculator.config import open_bracket, closed_bracket, supported_operations, supported_operators
 
 
-def __find_index_of_closing_bracket(operations):
+def find_index_of_closing_bracket(operations):
     stack = []
     index = 0
     to_return = index
@@ -18,7 +18,7 @@ def __find_index_of_closing_bracket(operations):
     return to_return
 
 
-def __parse_numbers(o):
+def parse_numbers(o):
     result = []
     while len(o) != 0:
         n = ''
@@ -38,7 +38,7 @@ def __parse_numbers(o):
     return result
 
 
-def __find_operations_in_operators(operations, lower_bound, upper_bound):
+def find_operations_in_operators(operations, lower_bound, upper_bound):
     j = 0
     for i in range(lower_bound, upper_bound):
         x = operations[i]
@@ -47,7 +47,7 @@ def __find_operations_in_operators(operations, lower_bound, upper_bound):
     return j
 
 
-def __parse_operators(o):
+def parse_operators(o):
     r = []
     for i in o:
         if i == ' ':
@@ -81,3 +81,16 @@ def validate_brackets(o):
             + o[:index_of_opened] + '' + o[index_of_opened] + '' + o[index_of_opened + 1:len(o)] \
             + '\n' + (' ' * index_of_opened + '^')
         raise RuntimeError(m)
+
+
+def find_operation_up_to_next_add_or_sub(operations):
+    i = 0
+    while i != len(operations):
+        if operations[i] == '+' or operations == '-':
+            return i
+        if operations[i] == '(':
+            i = find_index_of_closing_bracket(operations[i:])
+        else:
+            i += 1
+
+    return i

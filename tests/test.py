@@ -36,8 +36,21 @@ class TestCalculator(unittest.TestCase):
         self.assertEqual(evaluate(t), eval(t))
 
     def test_exp_3(self):
+        t = '4*6*7*9-1-2-6-8+2+(4+5)+7*1-8+6+6+20*4*6*7*9-1-2-6-8+2+(4+5)+7*1-8+6+6+204*6*7*9-1-2-6-8+2+(4+5)+7*1-8+6'
+
+        a1, t1 = execute_timed(eval, t)
+        a2, t2 = execute_timed(evaluate, t)
+
+        print(evaluate.__name__ + ' is ' + "{:.2f}".format(t2/t1) + ' times slower than ' + eval.__name__)
+
+        self.assertEqual(a1, a2)
+
+    def test_exp_4(self):
         t = '4*6*7*9-1-2-6-8+2+(4+5)+7*1-8+6+6+20'
-        self.assertEqual(eval(t), evaluate(t))
+        a1, t1 = execute_timed(eval, t)
+        a2, t2 = execute_timed(evaluate, t)
+
+        self.assertEqual(a1, a2)
 
 
 def stress(t):
@@ -48,6 +61,13 @@ def stress(t):
         tps += 1
 
     print('tps: ' + str(tps) + '\n')
+
+
+def execute_timed(func, arg):
+    start = time.time()
+    result = func(arg)
+    elapsed = time.time() - start
+    return result, elapsed
 
 
 if __name__ == '__main__':
