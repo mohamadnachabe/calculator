@@ -30,7 +30,7 @@ class Divide:
         return self.__op1 / __op2
 
 
-class Power:
+class Exponent:
     def __init__(self, __op1):
         self.__op1 = __op1
 

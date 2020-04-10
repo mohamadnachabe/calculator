@@ -1,25 +1,12 @@
-from calculator.BinaryOperation import Add, Multiply, Divide, Subtract, Power, NoOp
+from calculator.binary_operation import Add, Multiply, Divide, Subtract, Exponent, NoOp
 
 # env variables
+from calculator.config import open_bracket, exponent_sign, multiplication_sign, division_sign, \
+    addition_sign, subtraction_sign
+from calculator.utils import __find_index_of_closing_bracket, __parse_numbers, __find_operations_in_operators, \
+    __parse_operators, validate_brackets
+
 debug = False  # set this True to enable debug level logging
-open_bracket = '('
-closed_bracket = ')'
-addition_sign = '+'
-subtraction_sign = '-'
-multiplication_sign = '*'
-division_sign = '/'
-exponent_sign = '^'
-
-#  all supported mathematical operations
-#  todo support '% (modulo)' operations
-supported_operations = {addition_sign,
-                        subtraction_sign,
-                        multiplication_sign,
-                        division_sign,
-                        exponent_sign}
-
-#  includes all supported characters excluding numbers
-supported_operators = supported_operations.union(open_bracket, closed_bracket)
 
 
 def evaluate(o):
@@ -31,36 +18,25 @@ def evaluate(o):
     return __calculate_helper(numbers, operations)
 
 
-def validate_brackets(o):
-    index = 0
-    stack = []
-    index_of_opened = index
-    fault = False
-    for i in o:
-        if i == open_bracket:
-            stack.append('x')
-            index_of_opened = index
-        if i == closed_bracket:
-            if len(stack) == 0:
-                fault = True
-                break
-            stack.pop()
-        index += 1
-
-    if len(stack) > 0 or fault:
-        m = 'Unbalanced bracket at ''\n' \
-            + o[:index_of_opened] + '' + o[index_of_opened] + '' + o[index_of_opened + 1:len(o)] \
-            + '\n' + (' ' * index_of_opened + '^')
-        raise RuntimeError(m)
-
-
 #  todo
 #   1. investigate binary tree approach
 #   2. dynamic programming variant for the current approach
 #   function needs refactoring
 #  function recursively evaluates the expression
-def __calculate_helper(numbers, operations):
+def find_operation_up_to_next_add(operations):
+    i = 0
+    while i != len(operations):
+        if operations[i] == '+' or operations == '-':
+            return i
+        if operations[i] == '(':
+            i = __find_index_of_closing_bracket(operations[i:])
+        else:
+            i += 1
 
+    return i
+
+
+def __calculate_helper(numbers, operations):
     if len(numbers) == 1 and len(operations) != 0:
         raise RuntimeError
 
@@ -71,8 +47,8 @@ def __calculate_helper(numbers, operations):
         result = __handle_bracket_operation(numbers, operations, 0, NoOp())
 
     elif operations[0] == exponent_sign:
-        power = Power(int(numbers[0]))
-        result = __handle_operation_with_potential_precedence(numbers, operations, power)
+        exponent = Exponent(int(numbers[0]))
+        result = __handle_operation_with_potential_precedence(numbers, operations, exponent)
 
     elif operations[0] == multiplication_sign:
         multiply = Multiply(int(numbers[0]))
@@ -84,11 +60,25 @@ def __calculate_helper(numbers, operations):
 
     elif operations[0] == addition_sign:
         add = Add(int(numbers[0]))
+        # result = __handle_operation_with_potential_precedence(numbers, operations, add)
         result = add.apply(__calculate_helper(numbers[1:], operations[1:]))
 
     elif operations[0] == subtraction_sign:
         subtract = Subtract(int(numbers[0]))
-        result = subtract.apply(__calculate_helper(numbers[1:], operations[1:]))
+
+        if len(operations) > 1 and operations[1] == '+' or operations[1] == '-':
+            n = [subtract.apply(int(numbers[1]))] + numbers[2:]
+            result = __calculate_helper(n, operations[1:])
+
+        else:
+
+            i = find_operation_up_to_next_add(operations[1:]) + 1
+            j = __find_operations_in_operators(operations[1:], 0, i) + 1
+
+            n = subtract.apply(__calculate_helper(numbers[1:j], operations[1:i]))
+            result = __calculate_helper([n]+numbers[j:], operations[i:])
+
+        return result
 
     else:
         raise RuntimeError
@@ -119,9 +109,8 @@ def __high_precedence_operation(numbers, operations, binary_operation):
 
 
 def __handle_bracket_operation(numbers, operations, offset, binary_operation):
-
     i = __find_index_of_closing_bracket(operations[offset:]) + offset
-    j = __find_operations_in_operators(operations[offset:], i) + offset
+    j = __find_operations_in_operators(operations[offset:], 0, i) + offset
 
     n = binary_operation.apply(__calculate_helper(numbers[offset:j + 1], operations[1 + offset:i]))
 
@@ -130,66 +119,6 @@ def __handle_bracket_operation(numbers, operations, offset, binary_operation):
     return result
 
 
-def __find_index_of_closing_bracket(operations):
-    stack = []
-    index = 0
-    to_return = index
-    for i in operations:
-        if len(stack) == 0 and to_return != 0:
-            return to_return
-        if i == open_bracket:
-            stack.append('x')
-        if i == closed_bracket:
-            stack.pop()
-            to_return = index
-        index = index + 1
-
-    return to_return
-
-
-def __parse_numbers(o):
-    result = []
-    while len(o) != 0:
-        n = ''
-        if o[0] == ' ':
-            o = o[1:]
-            continue
-
-        while len(o) != 0 and o[0].isdigit():
-            n = n + o[0]
-            o = o[1:]
-        if len(o) != 0:
-            o = o[1:]
-
-        if n.isdigit():
-            result.append(n)
-
-    return result
-
-
-def __find_operations_in_operators(o, w):
-    j = 0
-    for i in range(0, w):
-        x = o[i]
-        if x in supported_operations:
-            j = j + 1
-    return j
-
-
-def __parse_operators(o):
-    r = []
-    for i in o:
-        if i == ' ':
-            continue
-        if i in supported_operators:
-            r.append(i)
-        elif not i.isdigit():
-            raise RuntimeError('Unsupported symbol ' + i)
-
-    return r
-
-
 def __log(message):
     if debug:
         print(message)
-
