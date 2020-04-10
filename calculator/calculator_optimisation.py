@@ -3,12 +3,12 @@ from calculator.calculator import __log
 from calculator.config import open_bracket, closed_bracket, exponent_sign, multiplication_sign, division_sign, \
     addition_sign, subtraction_sign
 from calculator.utils import parse_numbers, parse_operators, find_index_of_closing_bracket, \
-    find_operations_in_operators
+    find_operations_in_operators, validate_brackets, find_operation_up_to_next_add_or_sub
 
 debug = True  # set this True to enable debug level logging
 
 
-def evaluate(o):
+def evaluate_opt(o):
     validate_brackets(o)
 
     numbers = parse_numbers(o)
@@ -17,34 +17,6 @@ def evaluate(o):
     return __calculate_helper(None, numbers, 0, len(numbers)-1, operations, 0, len(operations)-1)
 
 
-def validate_brackets(o):
-    index = 0
-    stack = []
-    index_of_opened = index
-    fault = False
-    for i in o:
-        if i == open_bracket:
-            stack.append('x')
-            index_of_opened = index
-        if i == closed_bracket:
-            if len(stack) == 0:
-                fault = True
-                break
-            stack.pop()
-        index += 1
-
-    if len(stack) > 0 or fault:
-        m = 'Unbalanced bracket at ''\n' \
-            + o[:index_of_opened] + '' + o[index_of_opened] + '' + o[index_of_opened + 1:len(o)] \
-            + '\n' + (' ' * index_of_opened + '^')
-        raise RuntimeError(m)
-
-
-#  todo
-#   1. investigate binary tree approach
-#   2. dynamic programming variant for the current approach
-#   function needs refactoring
-#  function recursively evaluates the expression
 def __calculate_helper(carry, numbers, ns, ne, operations, os, oe):
     if ne == ns and os >= oe:
         return carry if carry is not None else int(numbers[ns])
@@ -60,7 +32,7 @@ def __calculate_helper(carry, numbers, ns, ne, operations, os, oe):
         number_ = carry
 
     if operation_ == open_bracket:
-        __handle_bracket_operation(carry, numbers, ns, ne, operations, os, oe, NoOp())
+        result = __handle_bracket_operation(carry, numbers, ns, ne, operations, os, oe, NoOp())
 
     elif operation_ == exponent_sign:
         power = Exponent(number_)
@@ -84,14 +56,22 @@ def __calculate_helper(carry, numbers, ns, ne, operations, os, oe):
 
     elif operation_ == subtraction_sign:
         subtract = Subtract(number_)
-        result = __handle_operation_with_potential_precedence(carry, numbers, ns, ne, operations, os, oe, subtract)
-        # n = __calculate_helper(None, numbers, ns + 1, ne, operations, os + 1, oe)
-        # result = subtract.apply(n)
+
+        if os != oe and operations[os] == '+' or operations[os] == '-':
+            n = subtract.apply(int(numbers[ns+1]))
+            result = __calculate_helper(n, numbers, ns+1, ne, operations, os+1, oe)
+
+        else:
+            i = find_operation_up_to_next_add_or_sub(operations, os) + 1
+            j = find_operations_in_operators(operations, 1, i) + 1
+
+            n = subtract.apply(__calculate_helper(None, numbers, ns+1, j, operations, os+1, i))
+            result = __calculate_helper(n, numbers, j, ne, operations, i, oe)
 
     else:
         raise RuntimeError
 
-    __log_result(numbers, operations, result)
+    # __log_result(numbers, operations, result)
 
     return result
 
@@ -119,7 +99,7 @@ def __high_precedence_operation(numbers, ns, ne, operations, os, oe, binary_oper
 
 
 def __handle_bracket_operation(carry, numbers, ns, ne, operations, os, oe, binary_operation):
-    i = find_index_of_closing_bracket(operations, os)
+    i = find_index_of_closing_bracket(operations, 0)
     j = find_operations_in_operators(operations, os, i)
 
     n = binary_operation.apply(

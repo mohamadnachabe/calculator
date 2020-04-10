@@ -52,7 +52,7 @@ def __calculate_helper(numbers, operations):
 
         else:
 
-            i = find_operation_up_to_next_add_or_sub(operations[1:]) + 1
+            i = find_operation_up_to_next_add_or_sub(operations[1:], 0) + 1
             j = find_operations_in_operators(operations[1:], 0, i) + 1
 
             n = subtract.apply(__calculate_helper(numbers[1:j], operations[1:i]))
@@ -87,7 +87,7 @@ def __high_precedence_operation(numbers, operations, binary_operation):
 
 
 def __handle_bracket_operation(numbers, operations, offset, binary_operation):
-    i = find_index_of_closing_bracket(operations[offset:]) + offset
+    i = find_index_of_closing_bracket(operations[offset:], 0) + offset
     j = find_operations_in_operators(operations[offset:], 0, i) + offset
 
     n = binary_operation.apply(__calculate_helper(numbers[offset:j + 1], operations[1 + offset:i]))

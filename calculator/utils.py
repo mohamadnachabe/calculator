@@ -1,16 +1,18 @@
 from calculator.config import open_bracket, closed_bracket, supported_operations, supported_operators
 
 
-def find_index_of_closing_bracket(operations):
+def find_index_of_closing_bracket(operations, start_index):
     stack = []
-    index = 0
+    index = start_index
     to_return = index
-    for i in operations:
+
+    for i in range(start_index, len(operations)):
+        op = operations[i]
         if len(stack) == 0 and to_return != 0:
             return to_return
-        if i == open_bracket:
+        if op == open_bracket:
             stack.append('x')
-        if i == closed_bracket:
+        if op == closed_bracket:
             stack.pop()
             to_return = index
         index = index + 1
@@ -83,13 +85,13 @@ def validate_brackets(o):
         raise RuntimeError(m)
 
 
-def find_operation_up_to_next_add_or_sub(operations):
-    i = 0
+def find_operation_up_to_next_add_or_sub(operations, start_index):
+    i = start_index
     while i != len(operations):
         if operations[i] == '+' or operations == '-':
             return i
         if operations[i] == '(':
-            i = find_index_of_closing_bracket(operations[i:])
+            i = find_index_of_closing_bracket(operations, i)
         else:
             i += 1
 
