@@ -22,6 +22,10 @@ class TestCalculator(unittest.TestCase):
         r = evaluate(t2)
         self.assertEqual(r, 82)
 
+    def test_with_python_eval1(self):
+        t = '2*5 + 5*1+8-9*3 - 2*5 + 5*1+8-9*3'
+        self.assertEqual(eval(t), evaluate(t))
+
     def test_simple(self):
         t3 = '(1+1)'
         r = evaluate(t3)
@@ -29,6 +33,10 @@ class TestCalculator(unittest.TestCase):
 
     def test_with_python_eval(self):
         t = '2*5 + 5*1+8-9*3 + 1 + 99 * 8 + 22'
+        self.assertEqual(evaluate(t), eval(t))
+
+    def test_with_python_eval3(self):
+        t = '2*5 + 5*1+8-9*3 + 1 + 99 * 8 + 22 + (5*7*7*9-9-0-8+7+5+(8+9)*7)'
         self.assertEqual(evaluate(t), eval(t))
 
     def test_exp(self):
@@ -41,7 +49,7 @@ class TestCalculator(unittest.TestCase):
         a1, t1 = execute_timed(eval, t)
         a2, t2 = execute_timed(evaluate, t)
 
-        print(evaluate.__name__ + ' is ' + "{:.2f}".format(t2/t1) + ' times slower than ' + eval.__name__)
+        print(evaluate.__name__ + ' is ' + "{:.2f}".format(t2 / t1) + ' times slower than ' + eval.__name__)
 
         self.assertEqual(a1, a2)
 
@@ -51,6 +59,18 @@ class TestCalculator(unittest.TestCase):
         a2, t2 = execute_timed(evaluate, t)
 
         self.assertEqual(a1, a2)
+
+    def test_exp_hard(self):
+        t = '77 - 3 * 4 * (12-2) + 11'
+        a1, t1 = execute_timed(eval, t)
+        a2, t2 = execute_timed(evaluate, t)
+
+        self.assertEqual(a1, a2)
+
+    def test_sub_prec(self):
+        t = '1+5+7-9+2-9'
+
+        self.assertEqual(evaluate(t), eval(t))
 
 
 def stress(t):

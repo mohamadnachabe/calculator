@@ -29,11 +29,28 @@ class TestCalculator(unittest.TestCase):
         self.assertEqual(r, eval(t3))
 
     def test_with_python_eval(self):
-        t = '2*5 + 5*1+8-9*3 + 1 + 99 * 8 + 22'
-        self.assertEqual(evaluate_opt(t), eval(t))
+        t = '2*5 + 5*1+8-9*3'
+        self.assertEqual(eval(t), evaluate_opt(t))
+
+    def test_with_python_eval__(self):
+        t = '8-9*3'
+        print(evaluate_opt(t))
+        self.assertEqual(eval(t), evaluate_opt(t))
 
     def test_exp(self):
         t = '(4 + 4) * 344 + ( ((6 + 7) * 1333) + 2 + 100000 ) * (30 + 2)'
+        self.assertEqual(evaluate_opt(t), eval(t))
+
+    def test_exp69(self):
+        t = '(6 + 7) + (30 + 2)'
+        self.assertEqual(evaluate_opt(t), eval(t))
+
+    def test_exp60(self):
+        t = '(6 + 7) * (30 + 2)'
+        self.assertEqual(evaluate_opt(t), eval(t))
+
+    def test_exp_dup(self):
+        t = '((6 + 7) * 1333) + 2 + 100000 '
         self.assertEqual(evaluate_opt(t), eval(t))
 
     def test_exp_3(self):
@@ -71,6 +88,13 @@ class TestCalculator(unittest.TestCase):
         print(evaluate_opt.__name__ + ' is ' + "{:.2f}".format(t2 / t3) + ' times slower than ' + eval.__name__)
         print(evaluate_opt.__name__ + ' is ' + "{:.2f}".format(t1 / t2) + ' times faster than ' + evaluate.__name__)
         print(evaluate.__name__ + ' is ' + "{:.2f}".format(t1 / t3) + ' times slower than ' + eval.__name__)
+
+        self.assertEqual(a1, a2)
+
+    def test_exp_hard(self):
+        t = '77 - 3 * 4 * (12-2) + 11'
+        a1, t1 = execute_timed(eval, t)
+        a2, t2 = execute_timed(evaluate_opt, t)
 
         self.assertEqual(a1, a2)
 

@@ -46,17 +46,19 @@ def __calculate_helper(numbers, operations):
     elif operations[0] == subtraction_sign:
         subtract = Subtract(int(numbers[0]))
 
-        if len(operations) > 1 and operations[1] == '+' or operations[1] == '-':
+        if len(operations) > 1 and (operations[1] == '+' or operations[1] == '-'):
             n = [subtract.apply(int(numbers[1]))] + numbers[2:]
             result = __calculate_helper(n, operations[1:])
 
-        else:
+        elif len(operations) == 1:
+            result = subtract.apply(int(numbers[1]))
 
-            i = find_operation_up_to_next_add_or_sub(operations[1:], 0) + 1
+        else:
+            i = find_operation_up_to_next_add_or_sub(operations[1:], 0)
             j = find_operations_in_operators(operations[1:], 0, i) + 1
 
-            n = subtract.apply(__calculate_helper(numbers[1:j], operations[1:i]))
-            result = __calculate_helper([n]+numbers[j:], operations[i:])
+            n = subtract.apply(__calculate_helper(numbers[1:j+1], operations[1:i+1]))
+            result = __calculate_helper([n]+numbers[j+1:], operations[i+1:])
 
     else:
         raise RuntimeError
