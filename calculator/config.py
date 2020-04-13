@@ -10,3 +10,5 @@ supported_operations = {addition_sign, subtraction_sign, multiplication_sign, di
 
 #  includes all supported characters excluding numbers
 supported_operators = supported_operations.union(open_bracket, closed_bracket)
+
+supported_operators_plus = supported_operations.union(open_bracket)

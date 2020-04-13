@@ -2,7 +2,8 @@ from calculator.binary_operation import Add, Multiply, Divide, Subtract, Exponen
 from calculator.config import open_bracket, exponent_sign, multiplication_sign, division_sign, \
     addition_sign, subtraction_sign
 from calculator.utils import parse_numbers, parse_operators, find_index_of_closing_bracket, \
-    find_operations_in_operators, validate_brackets, find_operation_up_to_next_add_or_sub
+    find_operations_in_operators, validate_brackets, find_operation_up_to_next_add_or_sub, \
+    find_numbers_between_operators, find_operation_up_to_next_add_or_sub_plus
 
 
 def evaluate_opt(o):
@@ -14,10 +15,10 @@ def evaluate_opt(o):
     return __calculate_helper(None, numbers, 0, len(numbers)-1, operations, 0, len(operations)-1)
 
 
-def __calculate_helper(carry, numbers, ns, ne, operations, os, oe):
+def __calculate_helper(replacing_numb, numbers, ns, ne, operations, os, oe):
     """
 
-    :param carry: if this number happens to be not None it replaces numbers[ns]
+    :param replacing_numb: if this number happens to be not None it replaces numbers[ns]
     :param numbers: all numbers required to compute equation
     :param ns: starting index for numbers
     :param ne: ending index for numbers (highest index should be len(numbers)-1)
@@ -31,20 +32,21 @@ def __calculate_helper(carry, numbers, ns, ne, operations, os, oe):
     numbs1 = numbers[ns:ne+1] # need to add one because of nature of python splitting operation
     ops1 = operations[os:oe+1] # upped bound is exclusive
 
-    if ns == ne and os >= oe:
-        return carry if carry is not None else int(numbers[ns])
-    elif ns > ne and os >= oe:
-        return carry
+    if ne - ns == 1 and os > oe:
+        return replacing_numb if replacing_numb is not None else int(numbers[ns])
 
-    if ne == ns:
-        return int(numbers[ns])
+    if ns == ne:
+        return replacing_numb if replacing_numb is not None else int(numbers[ns])
+
+    elif ns > ne and os > oe:
+        return replacing_numb
 
     operation_ = operations[os]
 
-    if carry is None:
+    if replacing_numb is None:
         number_ = int(numbers[ns])
     else:
-        number_ = carry
+        number_ = replacing_numb
 
     if operation_ == open_bracket:
         result = __handle_bracket_operation(numbers, ns, ne, operations, os, oe, NoOp())
@@ -71,19 +73,19 @@ def __calculate_helper(carry, numbers, ns, ne, operations, os, oe):
     elif operation_ == subtraction_sign:
         subtract = Subtract(number_)
 
-        if os + 1 < len(operations) and (operations[os+1] == '+' or operations[os+1] == '-'):
+        if oe - os >= 1 and (operations[os+1] == '+' or operations[os+1] == '-'):
             n = subtract.apply(int(numbers[ns+1]))
             result = __calculate_helper(n, numbers, ns+1, ne, operations, os+1, oe)
 
-        elif os + 1 >= len(operations) or os == oe:
+        elif oe - os == 0:
             result = subtract.apply(int(numbers[ns + 1]))
 
         else:
-            i = find_operation_up_to_next_add_or_sub(operations, os) + 1
-            j = find_operations_in_operators(operations, 1, i) + 1
+            i = find_operation_up_to_next_add_or_sub_plus(operations, os+1, oe)
+            j = find_numbers_between_operators(operations, 1, i) + ns
 
-            n = subtract.apply(__calculate_helper(carry, numbers, ns+1, j+1, operations, os+1, i))
-            result = __calculate_helper(n, numbers, j+2, ne, operations, i+1, oe)
+            n = subtract.apply(__calculate_helper(replacing_numb, numbers, ns + 1, j, operations, os + 1, i))
+            result = __calculate_helper(n, numbers, j, ne, operations, i+1, oe)
 
     else:
         raise RuntimeError('operation ' + operation_)
@@ -93,7 +95,7 @@ def __calculate_helper(carry, numbers, ns, ne, operations, os, oe):
 
 def __handle_operation_with_potential_precedence(numbers, ns, ne, operations, os, oe, binary_operation):
     if oe != os and operations[os+1] == '(':
-        return __handle_bracket_operation(numbers, ns+1, ne, operations, os+1, oe, binary_operation)
+        return __handle_bracket_operation(numbers, ns + 1, ne, operations, os+1, oe, binary_operation)
     else:
         n = binary_operation.apply(int(numbers[ns + 1]))
         return __calculate_helper(n, numbers, ns + 1, ne, operations, os + 1, oe)
@@ -101,7 +103,7 @@ def __handle_operation_with_potential_precedence(numbers, ns, ne, operations, os
 
 def __handle_bracket_operation(numbers, ns, ne, operations, os, oe, binary_operation):
     i = find_index_of_closing_bracket(operations, os)
-    j = find_operations_in_operators(operations, os, i) + ns
+    j = find_numbers_between_operators(operations, os, i) + ns - 1
 
     n = binary_operation.apply(
         __calculate_helper(None, numbers, ns, j, operations, os+1, i-1)

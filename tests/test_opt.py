@@ -4,6 +4,8 @@ from memory_profiler import profile
 import unittest
 import time
 
+from calculator.utils import find_operation_up_to_next_add_or_sub, find_operations_in_operators
+
 
 class TestCalculator(unittest.TestCase):
 
@@ -29,7 +31,7 @@ class TestCalculator(unittest.TestCase):
         self.assertEqual(r, eval(t3))
 
     def test_with_python_eval(self):
-        t = '2*5 + 5*1+8-9*3'
+        t = '5+8-9*3'
         self.assertEqual(eval(t), evaluate_opt(t))
 
     def test_with_python_eval__(self):
@@ -97,6 +99,44 @@ class TestCalculator(unittest.TestCase):
         a2, t2 = execute_timed(evaluate_opt, t)
 
         self.assertEqual(a1, a2)
+
+    def test_exp_hard_tt(self):
+        t = '1 - (5-5) + 5'
+        a1, t1 = execute_timed(eval, t)
+        a2, t2 = execute_timed(evaluate_opt, t)
+
+        self.assertEqual(a1, a2)
+
+    def test_exp_hard_t(self):
+        t = '1 - (5-5)'
+        a1, t1 = execute_timed(eval, t)
+        a2, t2 = execute_timed(evaluate_opt, t)
+
+        self.assertEqual(a1, a2)
+
+    def test_exp_hard_4(self):
+        t = '77 - (12-2)'
+        a1, t1 = execute_timed(eval, t)
+        a2, t2 = execute_timed(evaluate_opt, t)
+
+        self.assertEqual(a1, a2)
+
+    def test_exp_hard_2(self):
+        t = '1 - 3 * 12 * 2'
+        a1, t1 = execute_timed(eval, t)
+        a2, t2 = execute_timed(evaluate_opt, t)
+
+        self.assertEqual(a1, a2)
+
+    def test_op(self):
+        operations = ['-', '*', '*']
+        numbers = ['2', '4', '5', '5']
+        os = 0
+        i = find_operation_up_to_next_add_or_sub(operations, os + 1)
+        j = find_operations_in_operators(operations, os, i) + 1
+
+        self.assertEqual(2, i)
+        self.assertEqual(j, 3)
 
 
 def stress(t):

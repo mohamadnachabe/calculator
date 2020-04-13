@@ -60,6 +60,13 @@ class TestCalculator(unittest.TestCase):
 
         self.assertEqual(a1, a2)
 
+    def test_exp_hard_4(self):
+        t = '77 - (12-2)'
+        a1, t1 = execute_timed(eval, t)
+        a2, t2 = execute_timed(evaluate, t)
+
+        self.assertEqual(a1, a2)
+
     def test_exp_hard(self):
         t = '77 - 3 * 4 * (12-2) + 11'
         a1, t1 = execute_timed(eval, t)

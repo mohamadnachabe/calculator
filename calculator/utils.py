@@ -51,6 +51,30 @@ def find_operations_in_operators(operations, lower_bound, upper_bound):
     return j
 
 
+def find_numbers_between_operators(operations, os, oe):
+    j = 0
+    if operations[os] in supported_operations:
+        j += 1
+    for i in range(os, oe + 1):
+        op = operations[i]
+
+        if op in supported_operations and i + 1 == oe + 1:
+            return j + 1
+        elif i + 1 == len(operations):
+            break
+
+        op_next = operations[i+1]
+
+        if op == open_bracket and op_next in supported_operations:
+            j += 1
+        elif op in supported_operations and op_next == closed_bracket:
+            j += 1
+        elif op in supported_operations and op_next in supported_operations:
+            j += 1
+
+    return j
+
+
 def parse_operators(o):
     r = []
     for i in o:
@@ -90,7 +114,7 @@ def validate_brackets(o):
 def find_operation_up_to_next_add_or_sub(operations, start_index):
     # and len(operations) - start_index > 1
     i = start_index
-    while i != len(operations) :
+    while i < len(operations) - start_index :
         if operations[i] == '+' or operations[i] == '-':
             return i
         if operations[i] == '(':
@@ -99,3 +123,16 @@ def find_operation_up_to_next_add_or_sub(operations, start_index):
             i += 1
 
     return i
+
+
+def find_operation_up_to_next_add_or_sub_plus(operations, start_index, end_index):
+    i = start_index
+    while i <= end_index:
+        if operations[i] == '+' or operations[i] == '-':
+            return i - 1
+        if operations[i] == '(':
+            i = find_index_of_closing_bracket(operations, i) + 1
+        else:
+            i += 1
+
+    return i - 1
