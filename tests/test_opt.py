@@ -11,7 +11,7 @@ class TestCalculator(unittest.TestCase):
 
     @profile
     def test_complex(self):
-        t1 = '(4 + 4) * 344 + (((6 + 7) * 1333) + 2 + 100000) * (30 + 2)' \
+        t1 = '(4 + 4) * 344 + (((6 + 7) * 1333) + 2 + 100000) * (30 + 2 - 9 + 30 + 2)' \
              ' + (4 + 4) * 344 * (((6 + 7) * 1333) + 2 + 100000) * (30 + 2)' \
              ' + (4 + 4) * 344 * (((6 + 7) * 1333) + 2 + 100000) * (30 + 2)' \
              ' + (4 + 4) * 344 * (((6 + 7) * 1333) + 2 + 100000) * (30 + 2)' \
@@ -66,11 +66,20 @@ class TestCalculator(unittest.TestCase):
         self.assertEqual(a1, a2)
 
     def test_exp_4(self):
-        t = '4*6*7*9-1-2-6-8+2+(4+5)+7*1-8+6+6+20'
+        t = '(9-1)-(8+2)'
         a1, t1 = execute_timed(eval, t)
         a2, t2 = execute_timed(evaluate_opt, t)
 
         print(evaluate_opt.__name__ + ' is ' + "{:.2f}".format(t2 / t1) + ' times slower than ' + eval.__name__)
+
+        self.assertEqual(a1, a2)
+
+
+
+    def test_exp_44(self):
+        t = '4*6*7*(9-1)-2-6-(8+2)+(4+5)+7*1-8+6+6+20'
+        a1, t1 = execute_timed(eval, t)
+        a2, t2 = execute_timed(evaluate, t)
 
         self.assertEqual(a1, a2)
 
@@ -137,6 +146,11 @@ class TestCalculator(unittest.TestCase):
 
         self.assertEqual(2, i)
         self.assertEqual(j, 3)
+
+    def test_double_map(self):
+        d = {}
+        d['test'] = {}
+        d['test']['one'] = 'two'
 
 
 def stress(t):

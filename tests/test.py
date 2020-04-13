@@ -54,7 +54,7 @@ class TestCalculator(unittest.TestCase):
         self.assertEqual(a1, a2)
 
     def test_exp_4(self):
-        t = '4*6*7*9-1-2-6-8+2+(4+5)+7*1-8+6+6+20'
+        t = '4*6*7*(9-1)-2-6-(8+2)+(4+5)+7*1-8+6+6+20'
         a1, t1 = execute_timed(eval, t)
         a2, t2 = execute_timed(evaluate, t)
 

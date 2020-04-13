@@ -12,7 +12,7 @@ def evaluate_opt(o):
     numbers = parse_numbers(o)
     operations = parse_operators(o)
 
-    return __calculate_helper(None, numbers, 0, len(numbers)-1, operations, 0, len(operations)-1)
+    return __calculate_helper(None, numbers, 0, len(numbers) - 1, operations, 0, len(operations) - 1)
 
 
 def __calculate_helper(replacing_numb, numbers, ns, ne, operations, os, oe):
@@ -28,17 +28,13 @@ def __calculate_helper(replacing_numb, numbers, ns, ne, operations, os, oe):
     :return: equation result between [ns, ne] and [os, oe]
     """
 
-    # printing out current operation
-    numbs1 = numbers[ns:ne+1] # need to add one because of nature of python splitting operation
-    ops1 = operations[os:oe+1] # upped bound is exclusive
-
     if ne - ns == 1 and os > oe:
         return replacing_numb if replacing_numb is not None else int(numbers[ns])
 
     if ns == ne:
         return replacing_numb if replacing_numb is not None else int(numbers[ns])
 
-    elif ns > ne and os > oe:
+    elif os > oe:
         return replacing_numb
 
     operation_ = operations[os]
@@ -53,7 +49,7 @@ def __calculate_helper(replacing_numb, numbers, ns, ne, operations, os, oe):
 
     elif operation_ == exponent_sign:
         power = Exponent(number_)
-        n = power.apply(int(numbers[ns+1]))
+        n = power.apply(int(numbers[ns + 1]))
         result = __calculate_helper(n, numbers, ns + 1, ne, operations, os + 1, oe)
 
     elif operation_ == multiplication_sign:
@@ -68,24 +64,26 @@ def __calculate_helper(replacing_numb, numbers, ns, ne, operations, os, oe):
         add = Add(number_)
 
         n = __calculate_helper(None, numbers, ns + 1, ne, operations, os + 1, oe)
+
         result = add.apply(n)
 
     elif operation_ == subtraction_sign:
         subtract = Subtract(number_)
 
-        if oe - os >= 1 and (operations[os+1] == '+' or operations[os+1] == '-'):
-            n = subtract.apply(int(numbers[ns+1]))
-            result = __calculate_helper(n, numbers, ns+1, ne, operations, os+1, oe)
+        if oe - os >= 1 and (operations[os + 1] == '+' or operations[os + 1] == '-'):
+            n = subtract.apply(int(numbers[ns + 1]))
+            result = __calculate_helper(n, numbers, ns + 1, ne, operations, os + 1, oe)
 
         elif oe - os == 0:
             result = subtract.apply(int(numbers[ns + 1]))
 
         else:
-            i = find_operation_up_to_next_add_or_sub_plus(operations, os+1, oe)
+            i = find_operation_up_to_next_add_or_sub_plus(operations, os + 1, oe)
             j = find_numbers_between_operators(operations, 1, i) + ns
 
-            n = subtract.apply(__calculate_helper(replacing_numb, numbers, ns + 1, j, operations, os + 1, i))
-            result = __calculate_helper(n, numbers, j, ne, operations, i+1, oe)
+            n = subtract.apply(__calculate_helper(None, numbers, ns + 1, j, operations, os + 1, i))
+
+            result = __calculate_helper(n, numbers, j, ne, operations, i + 1, oe)
 
     else:
         raise RuntimeError('operation ' + operation_)
@@ -94,8 +92,8 @@ def __calculate_helper(replacing_numb, numbers, ns, ne, operations, os, oe):
 
 
 def __handle_operation_with_potential_precedence(numbers, ns, ne, operations, os, oe, binary_operation):
-    if oe != os and operations[os+1] == '(':
-        return __handle_bracket_operation(numbers, ns + 1, ne, operations, os+1, oe, binary_operation)
+    if oe != os and operations[os + 1] == '(':
+        return __handle_bracket_operation(numbers, ns + 1, ne, operations, os + 1, oe, binary_operation)
     else:
         n = binary_operation.apply(int(numbers[ns + 1]))
         return __calculate_helper(n, numbers, ns + 1, ne, operations, os + 1, oe)
@@ -106,8 +104,7 @@ def __handle_bracket_operation(numbers, ns, ne, operations, os, oe, binary_opera
     j = find_numbers_between_operators(operations, os, i) + ns - 1
 
     n = binary_operation.apply(
-        __calculate_helper(None, numbers, ns, j, operations, os+1, i-1)
+        __calculate_helper(None, numbers, ns, j, operations, os + 1, i - 1)
     )
 
     return __calculate_helper(n, numbers, j, ne, operations, i + 1, oe)
-
