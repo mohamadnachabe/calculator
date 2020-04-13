@@ -2,8 +2,7 @@ from calculator.binary_operation import Add, Multiply, Divide, Subtract, Exponen
 from calculator.config import open_bracket, exponent_sign, multiplication_sign, division_sign, \
     addition_sign, subtraction_sign
 from calculator.utils import parse_numbers, parse_operators, find_index_of_closing_bracket, \
-    find_operations_in_operators, validate_brackets, find_operation_up_to_next_add_or_sub, \
-    find_numbers_between_operators, find_operation_up_to_next_add_or_sub_plus
+    validate_brackets, find_numbers_between_operators, find_operation_up_to_next_add_or_sub_plus
 
 
 def evaluate_opt(o):
@@ -49,8 +48,7 @@ def __calculate_helper(replacing_numb, numbers, ns, ne, operations, os, oe):
 
     elif operation_ == exponent_sign:
         power = Exponent(number_)
-        n = power.apply(int(numbers[ns + 1]))
-        result = __calculate_helper(n, numbers, ns + 1, ne, operations, os + 1, oe)
+        result = __handle_operation_with_potential_precedence(numbers, ns, ne, operations, os, oe, power)
 
     elif operation_ == multiplication_sign:
         multiply = Multiply(number_)

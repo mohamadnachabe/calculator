@@ -21,9 +21,9 @@ class TestCalculator(unittest.TestCase):
         self.assertEqual(r, eval(t1))
 
     def test_exponent(self):
-        t2 = '2^2*4*5 +2'
+        t2 = '2^(2+2+2) + 2 - 2 + 2'
         r = evaluate_opt(t2)
-        self.assertEqual(r, 82)
+        self.assertEqual(r, 66)
 
     def test_simple(self):
         t3 = '(1+1)'
@@ -52,7 +52,7 @@ class TestCalculator(unittest.TestCase):
         self.assertEqual(evaluate_opt(t), eval(t))
 
     def test_exp_dup(self):
-        t = '((6 + 7) * 1333) + 2 + 100000 '
+        t = '((6 + 7) * 1333) + (2 + 100000) - 9 * 9 '
         self.assertEqual(evaluate_opt(t), eval(t))
 
     def test_exp_3(self):
