@@ -28,10 +28,10 @@ def __calculate_helper(replacing_numb, numbers, ns, ne, operations, os, oe):
     """
 
     if ne - ns == 1 and os > oe:
-        return replacing_numb if replacing_numb is not None else int(numbers[ns])
+        return replacing_numb if replacing_numb is not None else (numbers[ns])
 
     if ns == ne:
-        return replacing_numb if replacing_numb is not None else int(numbers[ns])
+        return replacing_numb if replacing_numb is not None else (numbers[ns])
 
     elif os > oe:
         return replacing_numb
@@ -39,7 +39,7 @@ def __calculate_helper(replacing_numb, numbers, ns, ne, operations, os, oe):
     operation_ = operations[os]
 
     if replacing_numb is None:
-        number_ = int(numbers[ns])
+        number_ = (numbers[ns])
     else:
         number_ = replacing_numb
 
@@ -69,11 +69,11 @@ def __calculate_helper(replacing_numb, numbers, ns, ne, operations, os, oe):
         subtract = Subtract(number_)
 
         if oe - os >= 1 and (operations[os + 1] == '+' or operations[os + 1] == '-'):
-            n = subtract.apply(int(numbers[ns + 1]))
+            n = subtract.apply((numbers[ns + 1]))
             result = __calculate_helper(n, numbers, ns + 1, ne, operations, os + 1, oe)
 
         elif oe - os == 0:
-            result = subtract.apply(int(numbers[ns + 1]))
+            result = subtract.apply((numbers[ns + 1]))
 
         else:
             i = find_operation_up_to_next_add_or_sub_plus(operations, os + 1, oe)
@@ -93,7 +93,7 @@ def __handle_operation_with_potential_precedence(numbers, ns, ne, operations, os
     if oe != os and operations[os + 1] == '(':
         return __handle_bracket_operation(numbers, ns + 1, ne, operations, os + 1, oe, binary_operation)
     else:
-        n = binary_operation.apply(int(numbers[ns + 1]))
+        n = binary_operation.apply((numbers[ns + 1]))
         return __calculate_helper(n, numbers, ns + 1, ne, operations, os + 1, oe)
 
 

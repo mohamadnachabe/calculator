@@ -74,8 +74,6 @@ class TestCalculator(unittest.TestCase):
 
         self.assertEqual(a1, a2)
 
-
-
     def test_exp_44(self):
         t = '4*6*7*(9-1)-2-6-(8+2)+(4+5)+7*1-8+6+6+20'
         a1, t1 = execute_timed(eval, t)
@@ -84,14 +82,14 @@ class TestCalculator(unittest.TestCase):
         self.assertEqual(a1, a2)
 
     def test_exp_5(self):
-        t = '4*6*7*9-1-2-6'
+        t = '4*6*7*9.8-1-2-6.6'
         a1, t1 = execute_timed(eval, t)
         a2, t2 = execute_timed(evaluate_opt, t)
 
         self.assertEqual(a1, a2)
 
     def test_exp_compare_with_other_impl(self):
-        t = '4*6*7*9-1-2-6-8+2+(4+5)+7*1-8+6+6+20'
+        t = '4*6*7.666*9-1-2-6-8+2+(4+5)+7*1-8+6+6+20'
         a1, t1 = execute_timed(evaluate, t)
         a2, t2 = execute_timed(evaluate_opt, t)
         a2, t3 = execute_timed(eval, t)
@@ -110,7 +108,7 @@ class TestCalculator(unittest.TestCase):
         self.assertEqual(a1, a2)
 
     def test_exp_hard_tt(self):
-        t = '1 - (5-5) + 5'
+        t = '1 - (5-5) + 5.5'
         a1, t1 = execute_timed(eval, t)
         a2, t2 = execute_timed(evaluate_opt, t)
 

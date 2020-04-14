@@ -22,36 +22,36 @@ def __calculate_helper(numbers, operations):
         raise RuntimeError
 
     if len(numbers) == 1:
-        return int(numbers[0])
+        return (numbers[0])
 
     if operations[0] == open_bracket:
         result = __handle_bracket_operation(numbers, operations, 0, NoOp())
 
     elif operations[0] == exponent_sign:
-        exponent = Exponent(int(numbers[0]))
+        exponent = Exponent((numbers[0]))
         result = __handle_operation_with_potential_precedence(numbers, operations, exponent)
 
     elif operations[0] == multiplication_sign:
-        multiply = Multiply(int(numbers[0]))
+        multiply = Multiply((numbers[0]))
         result = __handle_operation_with_potential_precedence(numbers, operations, multiply)
 
     elif operations[0] == division_sign:
-        divide = Divide(int(numbers[0]))
+        divide = Divide((numbers[0]))
         result = __handle_operation_with_potential_precedence(numbers, operations, divide)
 
     elif operations[0] == addition_sign:
-        add = Add(int(numbers[0]))
+        add = Add((numbers[0]))
         result = add.apply(__calculate_helper(numbers[1:], operations[1:]))
 
     elif operations[0] == subtraction_sign:
-        subtract = Subtract(int(numbers[0]))
+        subtract = Subtract((numbers[0]))
 
         if len(operations) > 1 and (operations[1] == '+' or operations[1] == '-'):
-            n = [subtract.apply(int(numbers[1]))] + numbers[2:]
+            n = [subtract.apply((numbers[1]))] + numbers[2:]
             result = __calculate_helper(n, operations[1:])
 
         elif len(operations) == 1:
-            result = subtract.apply(int(numbers[1]))
+            result = subtract.apply((numbers[1]))
 
         else:
             i = find_operation_up_to_next_add_or_sub(operations[1:], 0)
@@ -83,7 +83,7 @@ def __handle_operation_with_potential_precedence(numbers, operations, binary_ope
 
 
 def __high_precedence_operation(numbers, operations, binary_operation):
-    n = [binary_operation.apply(int(numbers[1]))] + numbers[2:]
+    n = [binary_operation.apply((numbers[1]))] + numbers[2:]
     result = __calculate_helper(n, operations[1:])
     return result
 

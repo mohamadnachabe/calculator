@@ -28,14 +28,15 @@ def parse_numbers(o):
             o = o[1:]
             continue
 
-        while len(o) != 0 and o[0].isdigit():
+        while len(o) != 0 and (o[0].isdigit() or o[0] == '.'):
             n = n + o[0]
             o = o[1:]
+
         if len(o) != 0:
             o = o[1:]
 
-        if n.isdigit():
-            result.append(n)
+        if n not in supported_operators and len(n) > 0:
+            result.append(float(n))
 
     return result
 
@@ -82,7 +83,7 @@ def parse_operators(o):
             continue
         if i in supported_operators:
             r.append(i)
-        elif not i.isdigit():
+        elif not i.isdigit() and i != '.':
             raise RuntimeError('Unsupported symbol ' + i)
 
     return r
