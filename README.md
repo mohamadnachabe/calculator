@@ -1,4 +1,4 @@
-calculator 
+Python Calculator 
 ======
 
 Evaluates mathematical expressions as strings.
@@ -9,7 +9,7 @@ Evaluates mathematical expressions as strings.
   t = evaluate('(4 + 4) * 344 + (((6 + 7) * 1333) + 2 + 100000) * (30 + 2)')
 ```
 
-**Supported operations**:
+## Supported operations:
 
 |Operatio|Symbol|
 |:---:|:---:|
