@@ -5,7 +5,7 @@ from calculator.utils import parse_numbers, parse_operators, find_index_of_closi
     validate_brackets, find_numbers_between_operators, find_operation_up_to_next_add_or_sub_plus
 
 
-def evaluate_opt(o):
+def evaluate_o(o):
     validate_brackets(o)
 
     numbers = parse_numbers(o)
@@ -28,7 +28,7 @@ def __calculate_helper(replacing_numb, numbers, ns, ne, operations, os, oe):
     """
 
     if ne - ns == 1 and os > oe:
-        return replacing_numb if replacing_numb is not None else (numbers[ns])
+        return replacing_numb
 
     if ns == ne:
         return replacing_numb if replacing_numb is not None else (numbers[ns])
@@ -107,4 +107,5 @@ def __handle_bracket_operation(numbers, ns, ne, operations, os, oe, binary_opera
         __calculate_helper(None, numbers, ns, j, operations, os + 1, i - 1)
     )
 
+    # new ns isn't incremented because a replacing_number is provided
     return __calculate_helper(n, numbers, j, ne, operations, i + 1, oe)
