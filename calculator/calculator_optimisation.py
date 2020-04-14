@@ -27,9 +27,6 @@ def __calculate_helper(replacing_numb, numbers, ns, ne, operations, os, oe):
     :return: equation result between [ns, ne] and [os, oe]
     """
 
-    if ne - ns == 1 and os > oe:
-        return replacing_numb
-
     if ns == ne:
         return replacing_numb if replacing_numb is not None else (numbers[ns])
 
