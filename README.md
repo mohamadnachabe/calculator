@@ -2,8 +2,8 @@ calculator
 ======
 
 Evaluates mathematical expressions as strings.
-##
-**Example**:
+
+## Example:
 
 ```python
   t = evaluate('(4 + 4) * 344 + (((6 + 7) * 1333) + 2 + 100000) * (30 + 2)')
@@ -11,9 +11,11 @@ Evaluates mathematical expressions as strings.
 
 **Supported operations**:
 
-- Addition ('+')
-- Subtraction ('-')
-- Multiplication ('*') 
-- Division ('/')
-- Exponentiation ('^')
-- Grouping (order of precedence '( )')
+|Operatio|Symbol|
+|:---:|:---:|
+|Addition|+|
+|Subtraction |-|
+|Multiplication |*|
+|Division|/|
+|Exponentiation|^|
+|Grouping (order of precedence) |( )|
