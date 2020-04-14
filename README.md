@@ -11,11 +11,11 @@ Evaluates mathematical expressions as strings.
 
 ## Supported operations:
 
-|Operatio|Symbol|
+|Operation|Symbol|
 |:---:|:---:|
 |Addition|+|
-|Subtraction |-|
-|Multiplication |*|
+|Subtraction|-|
+|Multiplication|*|
 |Division|/|
 |Exponentiation|^|
-|Grouping (order of precedence) |( )|
+|Grouping|( )|
