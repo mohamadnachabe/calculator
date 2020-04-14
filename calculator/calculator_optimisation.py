@@ -60,32 +60,34 @@ def __calculate_helper(replacing_numb, numbers, ns, ne, operations, os, oe):
 
     elif operation_ == addition_sign:
         add = Add(number_)
-
         n = __calculate_helper(None, numbers, ns + 1, ne, operations, os + 1, oe)
-
         result = add.apply(n)
 
     elif operation_ == subtraction_sign:
         subtract = Subtract(number_)
-
-        if oe - os >= 1 and (operations[os + 1] == '+' or operations[os + 1] == '-'):
-            n = subtract.apply((numbers[ns + 1]))
-            result = __calculate_helper(n, numbers, ns + 1, ne, operations, os + 1, oe)
-
-        elif oe - os == 0:
-            result = subtract.apply((numbers[ns + 1]))
-
-        else:
-            i = find_operation_up_to_next_add_or_sub_plus(operations, os + 1, oe)
-            j = find_numbers_between_operators(operations, 1, i) + ns
-
-            n = subtract.apply(__calculate_helper(None, numbers, ns + 1, j, operations, os + 1, i))
-
-            result = __calculate_helper(n, numbers, j, ne, operations, i + 1, oe)
+        result = __handle_subtraction(ne, ns, numbers, oe, operations, os, subtract)
 
     else:
         raise RuntimeError('operation ' + operation_)
 
+    return result
+
+
+def __handle_subtraction(ne, ns, numbers, oe, operations, os, subtract):
+    if oe - os >= 1 and (operations[os + 1] == '+' or operations[os + 1] == '-'):
+        n = subtract.apply((numbers[ns + 1]))
+        result = __calculate_helper(n, numbers, ns + 1, ne, operations, os + 1, oe)
+
+    elif oe - os == 0:
+        result = subtract.apply((numbers[ns + 1]))
+
+    else:
+        i = find_operation_up_to_next_add_or_sub_plus(operations, os + 1, oe)
+        j = find_numbers_between_operators(operations, 1, i) + ns
+
+        n = subtract.apply(__calculate_helper(None, numbers, ns + 1, j, operations, os + 1, i))
+
+        result = __calculate_helper(n, numbers, j, ne, operations, i + 1, oe)
     return result
 
 

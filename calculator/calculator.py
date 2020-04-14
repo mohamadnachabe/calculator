@@ -22,7 +22,7 @@ def __calculate_helper(numbers, operations):
         raise RuntimeError
 
     if len(numbers) == 1:
-        return (numbers[0])
+        return numbers[0]
 
     if operations[0] == open_bracket:
         result = __handle_bracket_operation(numbers, operations, 0, NoOp())
@@ -44,27 +44,31 @@ def __calculate_helper(numbers, operations):
         result = add.apply(__calculate_helper(numbers[1:], operations[1:]))
 
     elif operations[0] == subtraction_sign:
-        subtract = Subtract((numbers[0]))
-
-        if len(operations) > 1 and (operations[1] == '+' or operations[1] == '-'):
-            n = [subtract.apply((numbers[1]))] + numbers[2:]
-            result = __calculate_helper(n, operations[1:])
-
-        elif len(operations) == 1:
-            result = subtract.apply((numbers[1]))
-
-        else:
-            i = find_operation_up_to_next_add_or_sub(operations[1:], 0)
-            j = find_operations_in_operators(operations[1:], 0, i) + 1
-
-            n = subtract.apply(__calculate_helper(numbers[1:j+1], operations[1:i+1]))
-            result = __calculate_helper([n]+numbers[j+1:], operations[i+1:])
+        result = __handle_subtraction(numbers, operations)
 
     else:
         raise RuntimeError
 
     __log_result(numbers, operations, result)
 
+    return result
+
+
+def __handle_subtraction(numbers, operations):
+    subtract = Subtract((numbers[0]))
+    if len(operations) > 1 and (operations[1] == '+' or operations[1] == '-'):
+        n = [subtract.apply((numbers[1]))] + numbers[2:]
+        result = __calculate_helper(n, operations[1:])
+
+    elif len(operations) == 1:
+        result = subtract.apply((numbers[1]))
+
+    else:
+        i = find_operation_up_to_next_add_or_sub(operations[1:], 0)
+        j = find_operations_in_operators(operations[1:], 0, i) + 1
+
+        n = subtract.apply(__calculate_helper(numbers[1:j + 1], operations[1:i + 1]))
+        result = __calculate_helper([n] + numbers[j + 1:], operations[i + 1:])
     return result
 
 
