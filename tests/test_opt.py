@@ -135,6 +135,15 @@ class TestCalculator(unittest.TestCase):
 
         self.assertEqual(a1, a2)
 
+    def test_exp_division(self):
+        t = '1/3 + 1/(2*7)*8'
+        a1, t1 = execute_timed(eval, t)
+        a2, t2 = execute_timed(evaluate_opt, t)
+
+        print(a2)
+
+        self.assertEqual(a1, a2)
+
     def test_op(self):
         operations = ['-', '*', '*']
         numbers = ['2', '4', '5', '5']
