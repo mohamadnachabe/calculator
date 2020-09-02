@@ -11,10 +11,10 @@ def evaluate_o(o):
     numbers = parse_numbers(o)
     operations = parse_operators(o)
 
-    return __calculate_helper(None, numbers, 0, len(numbers) - 1, operations, 0, len(operations) - 1)
+    return __calculate_helper__(None, numbers, 0, len(numbers) - 1, operations, 0, len(operations) - 1)
 
 
-def __calculate_helper(replacing_numb, numbers, ns, ne, operations, os, oe):
+def __calculate_helper__(replacing_numb, numbers, ns, ne, operations, os, oe):
     """
 
     :param replacing_numb: if this number happens to be not None it replaces numbers[ns]
@@ -41,28 +41,28 @@ def __calculate_helper(replacing_numb, numbers, ns, ne, operations, os, oe):
         number_ = replacing_numb
 
     if operation_ == open_bracket:
-        result = __handle_bracket_operation(numbers, ns, ne, operations, os, oe, NoOp())
+        result = __handle_bracket_operation__(numbers, ns, ne, operations, os, oe, NoOp())
 
     elif operation_ == exponent_sign:
         power = Exponent(number_)
-        result = __handle_operation_with_potential_precedence(numbers, ns, ne, operations, os, oe, power)
+        result = __handle_operation_with_potential_precedence__(numbers, ns, ne, operations, os, oe, power)
 
     elif operation_ == multiplication_sign:
         multiply = Multiply(number_)
-        result = __handle_operation_with_potential_precedence(numbers, ns, ne, operations, os, oe, multiply)
+        result = __handle_operation_with_potential_precedence__(numbers, ns, ne, operations, os, oe, multiply)
 
     elif operation_ == division_sign:
         divide = Divide(number_)
-        result = __handle_operation_with_potential_precedence(numbers, ns, ne, operations, os, oe, divide)
+        result = __handle_operation_with_potential_precedence__(numbers, ns, ne, operations, os, oe, divide)
 
     elif operation_ == addition_sign:
         add = Add(number_)
-        n = __calculate_helper(None, numbers, ns + 1, ne, operations, os + 1, oe)
+        n = __calculate_helper__(None, numbers, ns + 1, ne, operations, os + 1, oe)
         result = add.apply(n)
 
     elif operation_ == subtraction_sign:
         subtract = Subtract(number_)
-        result = __handle_subtraction(ne, ns, numbers, oe, operations, os, subtract)
+        result = __handle_subtraction__(ne, ns, numbers, oe, operations, os, subtract)
 
     else:
         raise RuntimeError('operation ' + operation_)
@@ -70,10 +70,10 @@ def __calculate_helper(replacing_numb, numbers, ns, ne, operations, os, oe):
     return result
 
 
-def __handle_subtraction(ne, ns, numbers, oe, operations, os, subtract):
+def __handle_subtraction__(ne, ns, numbers, oe, operations, os, subtract):
     if oe - os >= 1 and (operations[os + 1] == '+' or operations[os + 1] == '-'):
         n = subtract.apply((numbers[ns + 1]))
-        result = __calculate_helper(n, numbers, ns + 1, ne, operations, os + 1, oe)
+        result = __calculate_helper__(n, numbers, ns + 1, ne, operations, os + 1, oe)
 
     elif oe - os == 0:
         result = subtract.apply((numbers[ns + 1]))
@@ -82,27 +82,27 @@ def __handle_subtraction(ne, ns, numbers, oe, operations, os, subtract):
         i = find_operation_up_to_next_add_or_sub_plus(operations, os + 1, oe)
         j = find_numbers_between_operators(operations, 1, i) + ns
 
-        n = subtract.apply(__calculate_helper(None, numbers, ns + 1, j, operations, os + 1, i))
+        n = subtract.apply(__calculate_helper__(None, numbers, ns + 1, j, operations, os + 1, i))
 
-        result = __calculate_helper(n, numbers, j, ne, operations, i + 1, oe)
+        result = __calculate_helper__(n, numbers, j, ne, operations, i + 1, oe)
     return result
 
 
-def __handle_operation_with_potential_precedence(numbers, ns, ne, operations, os, oe, binary_operation):
+def __handle_operation_with_potential_precedence__(numbers, ns, ne, operations, os, oe, binary_operation):
     if oe != os and operations[os + 1] == '(':
-        return __handle_bracket_operation(numbers, ns + 1, ne, operations, os + 1, oe, binary_operation)
+        return __handle_bracket_operation__(numbers, ns + 1, ne, operations, os + 1, oe, binary_operation)
     else:
         n = binary_operation.apply((numbers[ns + 1]))
-        return __calculate_helper(n, numbers, ns + 1, ne, operations, os + 1, oe)
+        return __calculate_helper__(n, numbers, ns + 1, ne, operations, os + 1, oe)
 
 
-def __handle_bracket_operation(numbers, ns, ne, operations, os, oe, binary_operation):
+def __handle_bracket_operation__(numbers, ns, ne, operations, os, oe, binary_operation):
     i = find_index_of_closing_bracket(operations, os)
     j = find_numbers_between_operators(operations, os, i) + ns - 1
 
     n = binary_operation.apply(
-        __calculate_helper(None, numbers, ns, j, operations, os + 1, i - 1)
+        __calculate_helper__(None, numbers, ns, j, operations, os + 1, i - 1)
     )
 
     # new ns isn't incremented because a replacing_number is provided
-    return __calculate_helper(n, numbers, j, ne, operations, i + 1, oe)
+    return __calculate_helper__(n, numbers, j, ne, operations, i + 1, oe)

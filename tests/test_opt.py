@@ -1,4 +1,4 @@
-from calculator.calculator_optimisation import evaluate_o
+from calculator.calculator_o import evaluate_o
 from calculator.calculator import evaluate
 from memory_profiler import profile
 import unittest
@@ -146,6 +146,15 @@ class TestCalculator(unittest.TestCase):
 
     def test_(self):
         t = '2*2*2*2*2*64 + 5'
+        a1, t1 = execute_timed(eval, t)
+        a2, t2 = execute_timed(evaluate_o, t)
+
+        print(a2)
+
+        self.assertEqual(a1, a2)
+
+    def test_1(self):
+        t = '(((9-6/2)*2-4)/2-6-1)/(2+24/(2+4))'
         a1, t1 = execute_timed(eval, t)
         a2, t2 = execute_timed(evaluate_o, t)
 
